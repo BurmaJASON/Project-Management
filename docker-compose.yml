@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: project-management-app
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+      - air-conf:/root/.air
+    depends_on:
+      - mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: project_management
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpassword
+
+  mysql:
+    image: mysql:8.0
+    container_name: project-management-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: project_management
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
+  air-conf:
